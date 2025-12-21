@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tarot Test</title>
+    <link href="{{ url_for('static', filename='styles/style.css') }}" rel="stylesheet" />
+</head>
+<body>
+    <h1>Tarot Test</h1>
+
+    <form method="post">
+        <input type="text" name="Q" id="Q" placeholder="Enter your Question"
+               value="{{ user_question or '' }}" />
+        <button type="submit">Submit</button>
+    </form>
+
+    {% if random_card %}
+        <div class="card-result">
+            <h2>Your card</h2>
+            <img src="{{ url_for('static', filename=card_image) }}"
+                 alt="{{ random_card['name'] }}"
+                 style="max-width: 300px; height: auto;" />
+            <p>Id: {{ random_card['id'] }}</p>
+            <p>Name: {{ random_card['name'] }}</p>
+        </div>
+    {% endif %}
+
+    {% if ai_answer %}
+        <div class="ai-result">
+            <h2>AI Answer</h2>
+            <p><strong>Your question:</strong> {{ user_question }}</p>
+            <p><strong>Response:</strong> {{ ai_answer }}</p>
+        </div>
+    {% endif %}
+</body>
+</html>
