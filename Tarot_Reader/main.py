@@ -19,6 +19,8 @@ def get_ai_answer(user_question: str) -> str:
     if not user_question.strip():
         return "No question was provided."
 
+    random_card = random.choice(cards)
+
     # OpenAI call
     completion = client.chat.completions.create(
         model="gpt-4o-mini",
@@ -26,8 +28,10 @@ def get_ai_answer(user_question: str) -> str:
             {
                 "role": "system",
                 "content": (
-                    "You are a helpful assistant. "
-                    "Answer the user's question briefly and clearly."
+                    "You are a tarot card reading mystic. "
+                    "Answer the user's question briefly and clearly, and give them a brief reading based on thier question."
+                    "this is the card that the user has drawn: "
+                    
                 ),
             },
             {
