@@ -14,12 +14,10 @@ def get_db_connection():
     conn.row_factory = sqlite3.Row
     return conn
 
-def get_ai_answer(user_question: str) -> str:
+def get_ai_answer(user_question: str, system_prompt: str) -> str:
     
     if not user_question.strip():
         return "No question was provided."
-
-    random_card = random.choice(cards)
 
     # OpenAI call
     completion = client.chat.completions.create(
@@ -27,12 +25,7 @@ def get_ai_answer(user_question: str) -> str:
         messages=[
             {
                 "role": "system",
-                "content": (
-                    "You are a tarot card reading mystic. "
-                    "Answer the user's question briefly and clearly, and give them a brief reading based on thier question."
-                    "this is the card that the user has drawn: "
-                    
-                ),
+                "content": system_prompt,
             },
             {
                 "role": "user",
@@ -62,12 +55,25 @@ def cards():
 
         if cards:
             random_card = random.choice(cards)
-            # Adjust extension to match your files (.jpg)
+            # .jpg file type is necessary
             card_image = f"images/card_{random_card['id']}.jpg"
+            card_name = random_card['name']
+
+            system_prompt = (
+                "You are a tarot card reading mystic. "
+                "Answer the user's question briefly and clearly, and give them a brief reading based on thier question."
+                f"This is the card that the user has drawn: {card_name}. "
+                "Use the card and the user's question together to give a short and focused reading."
+                )
+        else:
+            system_prompt = (
+                "You are a tarot card reading mystic. "
+                "Answer the user's question briefly and clearly"
+            )
 
         # Get AI answer based on the user's input
         try:
-            ai_answer = get_ai_answer(user_question)
+            ai_answer = get_ai_answer(user_question, system_prompt)
         except Exception as e:
             ai_answer = f"Error calling AI: {e}"
 
