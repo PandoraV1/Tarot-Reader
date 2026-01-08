@@ -5,12 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tarot Test</title>
     <link href="{{ url_for('static', filename='styles/style.css') }}" rel="stylesheet" />
+    <style> body {
+        border: 30px solid #4B003D;
+        margin: 0;
+        padding: 10px;
+    } 
+    .mybutton {
+        background-color: #26021F; /* button's background color */
+        color: white; /* text color */
+        padding: 10px 20px; /* Adds space inside the button */
+        border: none; /* Removes the default border */
+        border-radius: 5px; /* Rounds the corners */
+        cursor: pointer; /* changes cursor on hover */
+    }
+    .mybutton:hover {
+        background-color: #430437;
+    }</style>
 </head>
 <body>
 
     <div style="text-align: right;">
         <form action="{{ url_for('home') }}" method="get">
-            <button type="submit">Home</button>
+            <button class="mybutton">Home</button>
         </form>
     </div>
 
@@ -19,17 +35,21 @@
     <form method="post">
         <input type="text" name="Q" id="Q" placeholder="Enter your Question"
                value="{{ user_question or '' }}" />
-        <button type="submit">Submit</button>
+        <button class="mybutton">Submit</button>
     </form>
 
-    {% if random_card %}
-        <div class="card-result">
-            <h2>Your card</h2>
-            <img src="{{ url_for('static', filename=card_image) }}"
-                 alt="{{ random_card['name'] }}"
-                 style="max-width: 300px; height: auto;" />
-            <p>Id: {{ random_card['id'] }}</p>
-            <p>Name: The {{ random_card['name'] }}</p>
+    {% if drawn_cards %}
+    <div class="card-result">
+        <h2>Your cards</h2>
+            {% for c in drawn_cards %}
+                <div class="single-card">
+                    <img src="{{ url_for('static', filename='images/card_' ~ c['id'] ~ '.jpg') }}"
+                         alt="{{ c['name'] }}"
+                         style="max-width: 300px; height: auto; margin: 0 10px;" />
+                    <p>Id: {{ c['id'] }}</p>
+                    <p>Name: The {{ c['name'] }}</p>
+                </div>
+            {% endfor %}
         </div>
     {% endif %}
 

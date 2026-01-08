@@ -48,6 +48,12 @@ def cards():
     card_image = None
     ai_answer = None
     user_question = ""
+    cards = []
+    drawn_cards = []
+    system_prompt = (
+        "You are a tarot card reading mystic. "
+        "Answer the user's question briefly and clearly."
+    )
 
     if request.method == 'POST':
         user_question = request.form.get('Q', '')
@@ -57,25 +63,29 @@ def cards():
         cards = conn.execute('select name, id, meaning from cardsInfo').fetchall()
         conn.close()
 
-        if cards:
-            random_card = random.choice(cards)
+        if cards and len(cards) >= 2:
+            drawn_cards = random.sample(cards, 2) #array of cards randomely drawn
+
+            card1 = drawn_cards[0]
+            card2 = drawn_cards[1]
+
+            random_card = card1
             # .jpg file type is necessary
             card_image = f"images/card_{random_card['id']}.jpg"
-            card_name = random_card['name']
-            card_meaning = random_card['meaning']
+
+            card1_name = card1['name']
+            card1_meaning = card1['meaning']
+            card2_name = card2['name']
+            card2_meaning = card2['meaning']
 
             system_prompt = (
                 "You are a tarot card reading mystic. "
-                "Answer the user's question briefly and clearly, and give them a brief reading based on thier question."
-                f"This is the card that the user has drawn: {card_name}. "
-                f"This is the meaning for the card that the user has drawn: {card_meaning}"
-                "Use the card and the user's question together to give a short and focused reading."
+                "Answer the user's question briefly and clearly, and give them a brief reading based on their question. "
+                f"The user has drawn two cards. "
+                f"Card 1: {card1_name}. Meaning: {card1_meaning}. "
+                f"Card 2: {card2_name}. Meaning: {card2_meaning}. "
+                "Use both cards together with the user's question to give one short and focused reading."
                 )
-        else:
-            system_prompt = (
-                "You are a tarot card reading mystic. "
-                "Answer the user's question briefly and clearly"
-            )
 
         # Get AI answer based on the user's input
         try:
@@ -86,6 +96,7 @@ def cards():
     return render_template(
         'cards.html',
         random_card=random_card,
+        drawn_cards=drawn_cards,
         card_image=card_image,
         ai_answer=ai_answer,
         user_question=user_question,
