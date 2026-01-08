@@ -33,7 +33,7 @@ def get_ai_answer(user_question: str, system_prompt: str) -> str:
             },
         ],
         max_tokens=200,
-        temperature=0.7,
+        temperature=0.9,
     )
 
     return completion.choices[0].message.content.strip()
@@ -58,11 +58,13 @@ def cards():
             # .jpg file type is necessary
             card_image = f"images/card_{random_card['id']}.jpg"
             card_name = random_card['name']
+            card_meaning = random_card['meaning']
 
             system_prompt = (
                 "You are a tarot card reading mystic. "
                 "Answer the user's question briefly and clearly, and give them a brief reading based on thier question."
                 f"This is the card that the user has drawn: {card_name}. "
+                f"This is the meaning for the card that the user has drawn: {card_meaning}"
                 "Use the card and the user's question together to give a short and focused reading."
                 )
         else:
