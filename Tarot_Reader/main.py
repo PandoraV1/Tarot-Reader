@@ -1,7 +1,7 @@
 import os
 import sqlite3
 import random
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, url_for, redirect
 from openai import OpenAI
 
 app = Flask(__name__)
@@ -38,7 +38,11 @@ def get_ai_answer(user_question: str, system_prompt: str) -> str:
 
     return completion.choices[0].message.content.strip()
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/')
+def home():
+    return render_template('home.html')
+
+@app.route('/reader', methods=['GET', 'POST'])
 def cards():
     random_card = None
     card_image = None
@@ -50,7 +54,7 @@ def cards():
 
         # Get random card from SQLite
         conn = get_db_connection()
-        cards = conn.execute('select name, id from cardsInfo').fetchall()
+        cards = conn.execute('select name, id, meaning from cardsInfo').fetchall()
         conn.close()
 
         if cards:

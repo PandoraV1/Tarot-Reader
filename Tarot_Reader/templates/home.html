@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tarot Reader</title>
+    <link href="{{ url_for('static', filename='styles/style.css') }}" rel="stylesheet">
+</head>
+<body>
+    <h1>Tarot Reader</h1>
+    <p>Welcome! Click below to get your reading.</p>
+
+    <form action="{{ url_for('cards') }}" method="get">
+        <button type="submit">Begin Reading</button>
+    </form>
+</body>
+</html>
