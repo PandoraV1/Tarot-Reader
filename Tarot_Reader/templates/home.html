@@ -4,30 +4,50 @@
     <meta charset="UTF-8">
     <title>Tarot Reader</title>
     <link href="{{ url_for('static', filename='styles/style.css') }}" rel="stylesheet">
-    <style> body {
+    <style> 
+    body {
         border: 30px solid #4B003D; /* border color */
         margin: 0; /* space from edge of screen */
         padding: 10px; /* padding from other objects */
     } 
-        .mybutton {
-            background-color: #26021F; /* button's background color */
-            color: white; /* text color */
-            padding: 10px 20px; /* Adds space inside the button */
-            border: none; /* Removes the default border */
-            border-radius: 5px; /* Rounds the corners */
-            cursor: pointer; /* changes cursor on hover */
+    .mybutton {
+        background-color: #26021F; /* button's background color */
+        color: white; /* text color */
+        padding: 10px 20px; /* Adds space inside the button */
+        border: none; /* Removes the default border */
+        border-radius: 5px; /* Rounds the corners */
+        cursor: pointer; /* changes cursor on hover */
     }
-        .mybutton:hover {
-            background-color: #430437;
-        }
+    .mybutton:hover {
+        background-color: #430437;
+    }
     </style>
 </head>
 <body>
-        <h1>Tarot Reader</h1>        
-        <p>Welcome! Click below to get your reading.</p>
+    <div class="header-bar">
+        <div class="header-center">
+            <form action="{{ url_for('cards') }}" method="get">
+                <button type="submit">Get Reading</button>
+            </form>
 
+            <form action="{{ url_for('home') }}" method="get">
+                <button type="submit">Tarot Reader</button>
+            </form>
+
+            <button type="button">Card Glossary</button>
+        </div>
+
+        <div class="header-right">
+            <button type="button">History</button>
+        </div>
+    </div>
+
+    <div style="margin-top: 70px">
+        <h1>Tarot Reader</h1>        
+        
         <form action="{{ url_for('cards') }}" method="get">
             <button class="mybutton">Begin Reading </button>
         </form>
+    </div>
 </body>
 </html>

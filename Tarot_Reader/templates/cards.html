@@ -23,42 +23,55 @@
     }</style>
 </head>
 <body>
+    <div class="header-bar">
+        <div class="header-center">
+            <form action="{{ url_for('cards') }}" method="get">
+                <button type="submit">Get Reading</button>
+            </form>
 
-    <div style="text-align: right;">
-        <form action="{{ url_for('home') }}" method="get">
-            <button class="mybutton">Home</button>
-        </form>
+            <form action="{{ url_for('home') }}" method="get">
+                <button type="submit">Tarot Reader</button>
+            </form>
+
+            <button type="button">Card Glossary</button>
+        </div>
+
+        <div class="header-right">
+            <button type="button">History</button>
+        </div>
     </div>
 
-    <h1>Tarot Test</h1>
+    <div style="margin-top: 70px">
+        <h1>Tarot Test</h1>
 
-    <form method="post">
-        <input type="text" name="Q" id="Q" placeholder="Enter your Question"
-               value="{{ user_question or '' }}" />
-        <button class="mybutton">Submit</button>
-    </form>
+        <form method="post">
+            <input type="text" name="Q" id="Q" placeholder="Enter your Question"
+                value="{{ user_question or '' }}" />
+            <button class="mybutton">Submit</button>
+        </form>
 
-    {% if drawn_cards %}
-    <div class="card-result">
-        <h2>Your cards</h2>
-            {% for c in drawn_cards %}
-                <div class="single-card">
-                    <img src="{{ url_for('static', filename='images/card_' ~ c['id'] ~ '.jpg') }}"
-                         alt="{{ c['name'] }}"
-                         style="max-width: 300px; height: auto; margin: 0 10px;" />
-                    <p>Id: {{ c['id'] }}</p>
-                    <p>Name: The {{ c['name'] }}</p>
-                </div>
-            {% endfor %}
-        </div>
-    {% endif %}
+        {% if drawn_cards %}
+        <div class="card-result">
+            <h2>Your cards</h2>
+                {% for c in drawn_cards %}
+                    <div class="single-card">
+                        <img src="{{ url_for('static', filename='images/card_' ~ c['id'] ~ '.jpg') }}"
+                            alt="{{ c['name'] }}"
+                            style="max-width: 300px; height: auto; margin: 0 10px;" />
+                        <p>Id: {{ c['id'] }}</p>
+                        <p>Name: The {{ c['name'] }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
 
-    {% if ai_answer %}
-        <div class="ai-result">
-            <h2>AI Answer</h2>
-            <p><strong>Your question:</strong> {{ user_question }}</p>
-            <p><strong>Response:</strong> {{ ai_answer }}</p>
-        </div>
-    {% endif %}
+        {% if ai_answer %}
+            <div class="ai-result">
+                <h2>AI Answer</h2>
+                <p><strong>Your question:</strong> {{ user_question }}</p>
+                <p><strong>Response:</strong> {{ ai_answer }}</p>
+            </div>
+        {% endif %}
+    </div>
 </body>
 </html>
