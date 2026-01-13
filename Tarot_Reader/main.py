@@ -42,6 +42,23 @@ def get_ai_answer(user_question: str, system_prompt: str) -> str:
 def home():
     return render_template('home.html')
 
+@app.route('/glossary')
+def glossary():
+    conn = get_db_connection()
+    cards = conn.execute('select id, name from cardsInfo').fetchall()
+    conn.close()
+    return render_template('glossary.html', cards=cards)
+
+@app.route('/card/<int:card_id>')
+def card_detail(card_id):
+    conn = get_db_connection()
+    card = conn.execute(
+        'select id, name, meaning from cardsInfo where id = ?', (card_id,)    
+    ).fetchone()
+    conn.close()
+
+    return render_template('card_detail.html', card=card)
+
 @app.route('/reader', methods=['GET', 'POST'])
 def cards():
     random_card = None

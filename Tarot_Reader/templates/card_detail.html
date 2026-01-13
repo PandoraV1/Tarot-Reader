@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Card Details</title>
+    <link href="{{ url_for('static', filename='styles/style.css') }}" rel="stylesheet">
+</head>
+
+<body>
+    <div class="header-bar">
+        <div class="header-center">
+            <form action="{{ url_for('cards') }}" method="get">
+                <button type="submit">Get Reading</button>
+            </form>
+
+            <form action="{{ url_for('home') }}" method="get">
+                <button type="submit">Tarot Reader</button>
+            </form>
+
+            <form action="{{ url_for('glossary') }}" method="get">
+                <button type="submit">Card Glossary</button>
+            </form>
+        </div>
+
+        <div class="header-right">
+            <button type="button">History</button>
+        </div>
+    </div>
+
+    <div style="margin-top: 70px;">
+        <h1>The {{ card['name'] }}</h1>
+
+        <img src="{{ url_for('static', filename='images/card_' ~ card['id'] ~ '.jpg') }}"
+             alt="{{ card['name'] }}"
+             style="max-width: 300px; height: auto; display: block; margin-bottom: 20px;">
+
+        <p><strong>Id:</strong> {{ card['id'] }}</p>
+        <p><strong>Meaning:</strong> {{ card['meaning'] }}</p>
+    </div>
+</body>
+</html>

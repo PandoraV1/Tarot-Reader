@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Tarot Glossary</title>
+        <link href="{{ url_for('static', filename='styles/style.css') }}" rel="stylesheet">
+    </head>
+    <body>
+
+    
+        <div class="header-bar">
+            <div class="header-center">
+                <form action="{{ url_for('cards') }}" method="get">
+                    <button type="submit">Get Reading</button>
+                </form>
+
+                <form action="{{ url_for('home') }}" method="get">
+                    <button type="submit">Tarot Reader</button>
+                </form>
+
+                <form action="{{ url_for('glossary') }}" method="get">
+                    <button type="submit">Card Glossary</button>
+                </form>
+            </div>
+
+            <div class="header-right">
+                <button type="button">History</button>
+            </div>
+        </div>
+
+        <div style="margin-top: 70px;">
+            <h1>Card Glossary</h1>
+
+            <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+                {% for c in cards %}
+                    <div style="text-align: center;">
+                        <a href="{{ url_for('card_detail', card_id=c['id']) }}" style="text-decoration: none; color: inherit;">
+                            <img src="{{ url_for('static', filename='images/card_' ~ c['id'] ~ '.jpg') }}"
+                                alt="{{ c['name'] }}"
+                                style="max-width: 150px; height: auto; display: block; margin-bottom: 5px;">
+                            <div>Id: {{ c['id'] }}</div>
+                            <div>The {{ c['name'] }}</div>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </body>
+</html>
