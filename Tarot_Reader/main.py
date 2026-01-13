@@ -103,6 +103,31 @@ def cards():
                 f"Card 2: {card2_name}. Meaning: {card2_meaning}. "
                 "Use both cards together with the user's question to give one short and focused reading."
                 )
+            
+            conn = get_db_connection()
+            cur = conn.cursor()
+
+            cur.execute(
+                """
+                INSERT INTO readingHistory (
+                    card1ID, card2ID, card3ID, card4ID, card5ID, card6ID
+                ) VALUES (?, ?, NULL, NULL, NULL, NULL)
+                """,
+                (card1['id'], card2['id'])
+            )
+
+            reading_id = cur.lastrowid
+
+            cur.execute(
+            """
+            INSERT INTO readingHistoryNumCards (readingID, numCards)
+            VALUES (?, ?)
+            """,
+            (reading_id, 2)
+            )
+
+            conn.commit()
+            conn.close()
 
         # Get AI answer based on the user's input
         try:
