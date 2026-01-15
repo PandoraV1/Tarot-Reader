@@ -133,16 +133,7 @@ def cards():
         user_question = request.form.get('Q', '')
 
         num_cards_str = request.form.get('num_cards', '').strip()
-        if num_cards_str.isdigit():
-            num_cards = int(num_cards_str)
-        else:
-            num_cards = 2  # fall back to default
-
-        #safty min & max
-        if num_cards < 1:
-            num_cards = 1
-        if num_cards > 6:
-            num_cards = 6
+        num_cards = int(num_cards_str)
 
         # Get random card from SQLite
         conn = get_db_connection()
@@ -151,9 +142,6 @@ def cards():
 
         if cards and len(cards) >= num_cards:
             drawn_cards = random.sample(cards, num_cards) #array of cards randomely drawn
-
-            card1 = drawn_cards[0]
-            card2 = drawn_cards[1] if len(drawn_cards) > 1 else None
 
             card_details = []
             for cardNum, card in enumerate(drawn_cards, start=1):
