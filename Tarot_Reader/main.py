@@ -156,16 +156,17 @@ def cards():
             card2 = drawn_cards[1] if len(drawn_cards) > 1 else None
 
             card_details = []
-            for i, card in enumerate(drawn_cards, start=1):
+            for cardNum, card in enumerate(drawn_cards, start=1):
                 card_details.append(
-                    f"Card {i}: {card['name']}. Meaning: {card['meaning']}."
+                    f"Card {cardNum}: {card['name']}. Meaning: {card['meaning']}."
                 )
             card_details_str = " ".join(card_details)
+            
 
             system_prompt = (
                 "You are a tarot card reading mystic. "
                 "Answer the user's question briefly and clearly, and give them a brief reading based on their question. "
-                f"The user has drawn {num_cards} card(s). "
+                f"The user has drawn {num_cards_str} card(s). "
                 f"{card_details_str} "
                 f"Use all of these cards together with the user's question to give one short and focused reading."
                 )
@@ -177,13 +178,18 @@ def cards():
             conn = get_db_connection()
             cur = conn.cursor()
 
+            drawn_card_ids = [None] * 6
+            for i, card in enumerate(drawn_cards):
+                if i < 6:
+                    drawn_card_ids[i] = card['id']
+
             cur.execute(
                 """
                 INSERT INTO readingHistory (
                     card1ID, card2ID, card3ID, card4ID, card5ID, card6ID, aiInterpretation
                 ) VALUES (?, ?, ?, ?, ?, ?, ?)
                 """,
-                (card_ids['0'], card_ids['1'], card_ids['2'], card_ids['3'], card_ids['4'], card_ids['5'], ai_answer)
+                (drawn_card_ids[0], drawn_card_ids[1], drawn_card_ids[2], drawn_card_ids[3], drawn_card_ids[4], drawn_card_ids[5], ai_answer)
             )
 
             reading_id = cur.lastrowid
@@ -193,7 +199,7 @@ def cards():
             INSERT INTO readingHistoryNumCards (readingID, numCards)
             VALUES (?, ?)
             """,
-            (reading_id, 2)
+            (reading_id, num_cards)
             )
 
             conn.commit()
