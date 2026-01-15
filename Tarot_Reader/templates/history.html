@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Reading History</title>
+    <link href="{{ url_for('static', filename='styles/style.css') }}" rel="stylesheet">
+    <style>
+        .reading-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .reading-item {
+            border: 2px solid #4B003D;
+            padding: 10px;
+            background-color: #26021F;
+            color: #fff;
+        }
+        .card-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 10px 0;
+        }
+        .card-group img {
+            width: 60px;
+            height: auto;
+            border-radius: 4px;
+            box-shadow: 0 0 5px rgba(0,0,0,0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="header-bar">
+        <div class="header-center">
+            <form action="{{ url_for('cards') }}" method="get">
+                <button type="submit">Get Reading</button>
+            </form>
+            <form action="{{ url_for('home') }}" method="get">
+                <button type="submit">Tarot Reader</button>
+            </form>
+            <form action="{{ url_for('glossary') }}" method="get">
+                <button type="submit">Card Glossary</button>
+            </form>
+        </div>
+        <div class="header-right">
+            <form action="{{ url_for('history') }}" method="get">
+                <button type="submit">History</button>
+            </form>
+        </div>
+    </div>
+
+    <div style="margin-top: 70px;">
+        <h1>Reading History</h1>
+
+        <div class="reading-list">
+            {% for r in readings %}
+                <div class="reading-item">
+                    <a href="{{ url_for('history_detail', reading_id=r['readingID']) }}"
+                       style="color: inherit; text-decoration: none;">
+                        <p><strong>Reading #{{ r['readingID'] }}</strong>
+                           {% if r['readingDate'] %} — {{ r['readingDate'] }}{% endif %}</p>
+
+                        <div class="card-group">
+                            {% if r['card1ID'] %}
+                                <img src="{{ url_for('static', filename='images/card_' ~ r['card1ID'] ~ '.jpg') }}"
+                                     alt="Card {{ r['card1ID'] }}">
+                            {% endif %}
+                            {% if r['card2ID'] %}
+                                <img src="{{ url_for('static', filename='images/card_' ~ r['card2ID'] ~ '.jpg') }}"
+                                     alt="Card {{ r['card2ID'] }}">
+                            {% endif %}
+                            {% if r['card3ID'] %}
+                                <img src="{{ url_for('static', filename='images/card_' ~ r['card3ID'] ~ '.jpg') }}"
+                                     alt="Card {{ r['card3ID'] }}">
+                            {% endif %}
+                            {% if r['card4ID'] %}
+                                <img src="{{ url_for('static', filename='images/card_' ~ r['card4ID'] ~ '.jpg') }}"
+                                     alt="Card {{ r['card4ID'] }}">
+                            {% endif %}
+                            {% if r['card5ID'] %}
+                                <img src="{{ url_for('static', filename='images/card_' ~ r['card5ID'] ~ '.jpg') }}"
+                                     alt="Card {{ r['card5ID'] }}">
+                            {% endif %}
+                            {% if r['card6ID'] %}
+                                <img src="{{ url_for('static', filename='images/card_' ~ r['card6ID'] ~ '.jpg') }}"
+                                     alt="Card {{ r['card6ID'] }}">
+                            {% endif %}
+                        </div>
+
+                        {% if r['aiInterpretation'] %}
+                            <p style="margin-top: 10px; font-size: 1.2rem;">
+                                <strong>AI Summary:</strong> {{ r['aiInterpretation'] }}
+                            </p>
+                        {% endif %}
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

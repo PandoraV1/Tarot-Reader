@@ -42,6 +42,64 @@ def get_ai_answer(user_question: str, system_prompt: str) -> str:
 def home():
     return render_template('home.html')
 
+@app.route('/history')
+def history():
+    conn = get_db_connection()
+    readings = conn.execute(
+        """
+        SELECT readingID, readingDate,
+               card1ID, card2ID, card3ID, card4ID, card5ID, card6ID,
+               aiInterpretation
+        FROM readingHistory
+        ORDER BY readingID DESC
+        """
+    ).fetchall()
+    conn.close()
+    return render_template('history.html', readings=readings)
+
+@app.route('/history/<int:reading_id>')
+def history_detail(reading_id):
+    conn = get_db_connection()
+
+    # Get the reading row
+    reading = conn.execute(
+        """
+        SELECT readingID, readingDate,
+               card1ID, card2ID, card3ID, card4ID, card5ID, card6ID,
+               aiInterpretation
+        FROM readingHistory
+        WHERE readingID = ?
+        """,
+        (reading_id,)
+    ).fetchone()
+
+    if reading is None:
+        conn.close()
+        return "Reading not found", 404
+
+    # Collect card IDs and fetch their details
+    card_ids = [
+        reading['card1ID'],
+        reading['card2ID'],
+        reading['card3ID'],
+        reading['card4ID'],
+        reading['card5ID'],
+        reading['card6ID'],
+    ]
+    card_ids = [cid for cid in card_ids if cid is not None]
+
+    cards = []
+    if card_ids:
+        placeholders = ",".join("?" for _ in card_ids)
+        cards = conn.execute(
+            f"SELECT id, name FROM cardsInfo WHERE id IN ({placeholders})",
+            card_ids
+        ).fetchall()
+
+    conn.close()
+    return render_template('history_detail.html', reading=reading, cards=cards)
+
+
 @app.route('/glossary')
 def glossary():
     conn = get_db_connection()
@@ -103,6 +161,10 @@ def cards():
                 f"Card 2: {card2_name}. Meaning: {card2_meaning}. "
                 "Use both cards together with the user's question to give one short and focused reading."
                 )
+
+        # Get AI answer based on the user's input
+        try:
+            ai_answer = get_ai_answer(user_question, system_prompt)
             
             conn = get_db_connection()
             cur = conn.cursor()
@@ -110,10 +172,10 @@ def cards():
             cur.execute(
                 """
                 INSERT INTO readingHistory (
-                    card1ID, card2ID, card3ID, card4ID, card5ID, card6ID
-                ) VALUES (?, ?, NULL, NULL, NULL, NULL)
+                    card1ID, card2ID, card3ID, card4ID, card5ID, card6ID, aiInterpretation
+                ) VALUES (?, ?, NULL, NULL, NULL, NULL, ?)
                 """,
-                (card1['id'], card2['id'])
+                (card1['id'], card2['id'], ai_answer)
             )
 
             reading_id = cur.lastrowid
@@ -128,10 +190,6 @@ def cards():
 
             conn.commit()
             conn.close()
-
-        # Get AI answer based on the user's input
-        try:
-            ai_answer = get_ai_answer(user_question, system_prompt)
         except Exception as e:
             ai_answer = f"Error calling AI: {e}"
 

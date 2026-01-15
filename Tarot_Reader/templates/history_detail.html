@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Reading {{ reading['readingID'] }}</title>
+    <link href="{{ url_for('static', filename='styles/style.css') }}" rel="stylesheet">
+</head>
+<body>
+    <div class="header-bar">
+        <div class="header-center">
+            <form action="{{ url_for('cards') }}" method="get">
+                <button type="submit">Get Reading</button>
+            </form>
+            <form action="{{ url_for('home') }}" method="get">
+                <button type="submit">Tarot Reader</button>
+            </form>
+            <form action="{{ url_for('glossary') }}" method="get">
+                <button type="submit">Card Glossary</button>
+            </form>
+        </div>
+        <div class="header-right">
+            <form action="{{ url_for('history') }}" method="get">
+                <button type="submit">History</button>
+            </form>
+        </div>
+    </div>
+
+    <div style="margin-top: 70px;">
+        <h1>Reading #{{ reading['readingID'] }}</h1>
+        {% if reading['readingDate'] %}
+            <p><strong>Date:</strong> {{ reading['readingDate'] }}</p>
+        {% endif %}
+
+        <h2>Cards</h2>
+        <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+            {% for c in cards %}
+                <div style="text-align: center;">
+                    <img src="{{ url_for('static', filename='images/card_' ~ c['id'] ~ '.jpg') }}"
+                         alt="{{ c['name'] }}"
+                         style="max-width: 150px; height: auto; display: block; margin-bottom: 5px;">
+                    <div>Id: {{ c['id'] }}</div>
+                    <div>The {{ c['name'] }}</div>
+                </div>
+            {% endfor %}
+        </div>
+
+        {% if reading['aiInterpretation'] %}
+            <h2 style="margin-top: 20px;">AI Interpretation</h2>
+            <p>{{ reading['aiInterpretation'] }}</p>
+        {% endif %}
+
+        <form action="{{ url_for('history') }}" method="get" style="margin-top: 20px;">
+            <button type="submit">Back to History</button>
+        </form>
+    </div>
+</body>
+</html>
