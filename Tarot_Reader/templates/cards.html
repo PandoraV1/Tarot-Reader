@@ -49,6 +49,16 @@
         <h1>Tarot Test</h1>
 
         <form method="post">
+            <label for="num_cards">Number of Cards:</label>
+            <select name="num_cards" id="num_cards">
+                <option value="1">1 card reading</option>
+                <option value="2">2 card reading</option>
+                <option value="3">3 card reading</option>
+                <option value="4">4 card reading</option>
+                <option value="5">5 card reading</option>
+                <option value="6">6 card reading</option>
+            </select>
+
             <input type="text" name="Q" id="Q" placeholder="Enter your Question"
                 value="{{ user_question or '' }}" />
             <button class="mybutton">Submit</button>
