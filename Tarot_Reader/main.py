@@ -42,6 +42,64 @@ def get_ai_answer(user_question: str, system_prompt: str) -> str:
 def home():
     return render_template('home.html')
 
+@app.route('/history')
+def history():
+    conn = get_db_connection()
+    readings = conn.execute(
+        """
+        SELECT readingID, readingDate,
+               card1ID, card2ID, card3ID, card4ID, card5ID, card6ID,
+               aiInterpretation
+        FROM readingHistory
+        ORDER BY readingID DESC
+        """
+    ).fetchall()
+    conn.close()
+    return render_template('history.html', readings=readings)
+
+@app.route('/history/<int:reading_id>')
+def history_detail(reading_id):
+    conn = get_db_connection()
+
+    # Get the reading row
+    reading = conn.execute(
+        """
+        SELECT readingID, readingDate,
+               card1ID, card2ID, card3ID, card4ID, card5ID, card6ID,
+               aiInterpretation
+        FROM readingHistory
+        WHERE readingID = ?
+        """,
+        (reading_id,)
+    ).fetchone()
+
+    if reading is None:
+        conn.close()
+        return "Reading not found", 404
+
+    # Collect card IDs and fetch their details
+    card_ids = [
+        reading['card1ID'],
+        reading['card2ID'],
+        reading['card3ID'],
+        reading['card4ID'],
+        reading['card5ID'],
+        reading['card6ID'],
+    ]
+    card_ids = [cid for cid in card_ids if cid is not None]
+
+    cards = []
+    if card_ids:
+        placeholders = ",".join("?" for _ in card_ids)
+        cards = conn.execute(
+            f"SELECT id, name FROM cardsInfo WHERE id IN ({placeholders})",
+            card_ids
+        ).fetchall()
+
+    conn.close()
+    return render_template('history_detail.html', reading=reading, cards=cards)
+
+
 @app.route('/glossary')
 def glossary():
     conn = get_db_connection()
@@ -61,9 +119,8 @@ def card_detail(card_id):
 
 @app.route('/reader', methods=['GET', 'POST'])
 def cards():
-    random_card = None
-    card_image = None
     ai_answer = None
+    num_cards = 2
     user_question = ""
     cards = []
     drawn_cards = []
@@ -75,48 +132,81 @@ def cards():
     if request.method == 'POST':
         user_question = request.form.get('Q', '')
 
+        num_cards_str = request.form.get('num_cards', '').strip()
+        if num_cards_str.isdigit():
+            num_cards = int(num_cards_str)
+        else:
+            num_cards = 2  # fall back to default
+
+        #safty min & max
+        if num_cards < 1:
+            num_cards = 1
+        if num_cards > 6:
+            num_cards = 6
+
         # Get random card from SQLite
         conn = get_db_connection()
         cards = conn.execute('select name, id, meaning from cardsInfo').fetchall()
         conn.close()
 
-        if cards and len(cards) >= 2:
-            drawn_cards = random.sample(cards, 2) #array of cards randomely drawn
+        if cards and len(cards) >= num_cards:
+            drawn_cards = random.sample(cards, num_cards) #array of cards randomely drawn
 
             card1 = drawn_cards[0]
-            card2 = drawn_cards[1]
+            card2 = drawn_cards[1] if len(drawn_cards) > 1 else None
 
-            random_card = card1
-            # .jpg file type is necessary
-            card_image = f"images/card_{random_card['id']}.jpg"
-
-            card1_name = card1['name']
-            card1_meaning = card1['meaning']
-            card2_name = card2['name']
-            card2_meaning = card2['meaning']
+            card_details = []
+            for i, card in enumerate(drawn_cards, start=1):
+                card_details.append(
+                    f"Card {i}: {card['name']}. Meaning: {card['meaning']}."
+                )
+            card_details_str = " ".join(card_details)
 
             system_prompt = (
                 "You are a tarot card reading mystic. "
                 "Answer the user's question briefly and clearly, and give them a brief reading based on their question. "
-                f"The user has drawn two cards. "
-                f"Card 1: {card1_name}. Meaning: {card1_meaning}. "
-                f"Card 2: {card2_name}. Meaning: {card2_meaning}. "
-                "Use both cards together with the user's question to give one short and focused reading."
+                f"The user has drawn {num_cards} card(s). "
+                f"{card_details_str} "
+                f"Use all of these cards together with the user's question to give one short and focused reading."
                 )
 
         # Get AI answer based on the user's input
         try:
             ai_answer = get_ai_answer(user_question, system_prompt)
+            
+            conn = get_db_connection()
+            cur = conn.cursor()
+
+            cur.execute(
+                """
+                INSERT INTO readingHistory (
+                    card1ID, card2ID, card3ID, card4ID, card5ID, card6ID, aiInterpretation
+                ) VALUES (?, ?, ?, ?, ?, ?, ?)
+                """,
+                (card_ids['0'], card_ids['1'], card_ids['2'], card_ids['3'], card_ids['4'], card_ids['5'], ai_answer)
+            )
+
+            reading_id = cur.lastrowid
+
+            cur.execute(
+            """
+            INSERT INTO readingHistoryNumCards (readingID, numCards)
+            VALUES (?, ?)
+            """,
+            (reading_id, 2)
+            )
+
+            conn.commit()
+            conn.close()
         except Exception as e:
             ai_answer = f"Error calling AI: {e}"
 
     return render_template(
         'cards.html',
-        random_card=random_card,
         drawn_cards=drawn_cards,
-        card_image=card_image,
         ai_answer=ai_answer,
         user_question=user_question,
+        num_cards=num_cards,
     )
 
 if __name__ == '__main__':
