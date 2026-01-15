@@ -63,27 +63,27 @@
                            {% if r['readingDate'] %} — {{ r['readingDate'] }}{% endif %}</p>
 
                         <div class="card-group">
-                            {% if r['card1ID'] != null %}
+                            {% if r['card1ID'] is not none %}
                                 <img src="{{ url_for('static', filename='images/card_' ~ r['card1ID'] ~ '.jpg') }}"
                                      alt="Card {{ r['card1ID'] }}">
                             {% endif %}
-                            {% if r['card2ID'] != null %}
+                            {% if r['card2ID'] is not none %}
                                 <img src="{{ url_for('static', filename='images/card_' ~ r['card2ID'] ~ '.jpg') }}"
                                      alt="Card {{ r['card2ID'] }}">
                             {% endif %}
-                            {% if r['card3ID'] != null %}
+                            {% if r['card3ID'] is not none %}
                                 <img src="{{ url_for('static', filename='images/card_' ~ r['card3ID'] ~ '.jpg') }}"
                                      alt="Card {{ r['card3ID'] }}">
                             {% endif %}
-                            {% if r['card4ID'] != null %}
+                            {% if r['card4ID'] is not none %}
                                 <img src="{{ url_for('static', filename='images/card_' ~ r['card4ID'] ~ '.jpg') }}"
                                      alt="Card {{ r['card4ID'] }}">
                             {% endif %}
-                            {% if r['card5ID'] != null %}
+                            {% if r['card5ID'] is not none %}
                                 <img src="{{ url_for('static', filename='images/card_' ~ r['card5ID'] ~ '.jpg') }}"
                                      alt="Card {{ r['card5ID'] }}">
                             {% endif %}
-                            {% if r['card6ID'] != null %}
+                            {% if r['card6ID'] is not none %}
                                 <img src="{{ url_for('static', filename='images/card_' ~ r['card6ID'] ~ '.jpg') }}"
                                      alt="Card {{ r['card6ID'] }}">
                             {% endif %}
