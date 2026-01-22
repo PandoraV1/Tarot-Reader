@@ -99,6 +99,20 @@ def history_detail(reading_id):
     conn.close()
     return render_template('history_detail.html', reading=reading, cards=cards)
 
+@app.route('/history/clear', methods=['POST'])
+def clear_history():
+    conn = get_db_connection()
+    cur = conn.cursor()
+
+    # Delete all rows from the related tables
+    cur.execute("DELETE FROM readingHistoryNumCards")
+    cur.execute("DELETE FROM readingHistory")
+
+    conn.commit()
+    conn.close()
+
+    return redirect(url_for('history'))
+
 
 @app.route('/glossary')
 def glossary():
