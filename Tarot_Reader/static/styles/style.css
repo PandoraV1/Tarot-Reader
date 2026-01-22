@@ -1,4 +1,25 @@
 /* Tarot Purple Theme - Bootstrap Freelancer Style */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+body {
+    border: 30px solid var(--tarot-primary) !important;
+    background: linear-gradient(135deg, var(--tarot-primary) 0%, var(--tarot-bg) 100%) !important;
+    font-family: 'Lato', sans-serif;
+    position: relative;
+    box-sizing: border-box;
+}
+
 :root {
     --tarot-primary: #4B003D;
     --tarot-secondary: #26021F;
@@ -6,19 +27,14 @@
     --tarot-bg: #9A067F;
 }
 
-body {
-    border: 30px solid var(--tarot-primary) !important;
-    background-color: var(--tarot-bg) !important;
-    font-family: 'Lato', sans-serif;
-}
-
 /* Freelancer Navbar - Fixed Top Purple */
 .navbar {
     background-color: var(--tarot-primary) !important;
-    padding: 1rem 0;
+    padding: 0.5rem 0;
     font-weight: 700;
     text-transform: uppercase;
     font-size: 1.1rem;
+    z-index: 10;
 }
 
 .navbar-brand {
@@ -38,16 +54,27 @@ body {
     border-radius: 0.25rem;
 }
 
-/* Masthead/Hero Section */
+/* Masthead - Full remaining height */
 .masthead {
-    background: linear-gradient(135deg, var(--tarot-primary) 0%, var(--tarot-bg) 100%);
-    min-height: 70vh;
+    height: calc(100vh - 120px);  /* Full height minus navbar + border */
     display: flex;
+    flex-direction: column;
     align-items: center;
+    justify-content: center;
     text-align: center;
     color: white;
-    padding: 8rem 0 4rem;
+    padding: 2rem;
+    margin-top: 60;
     position: relative;
+    z-index: 1;
+}
+
+/* Content inside masthead gets proper spacing */
+.masthead > .container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .masthead h1 {
