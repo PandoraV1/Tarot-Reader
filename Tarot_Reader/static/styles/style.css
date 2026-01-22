@@ -1,65 +1,100 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-.header-bar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #4B003D;
-    color: #000000;
-    padding: 0 10px;
-    width: 100%;
-    box-sizing: border-box;
-}
-
-.header-center {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    flex: 1;
-}
-
-.header-right {
-    margin-left: auto;
-    justify-content: flex-end;
-}
-
-.header-bar button {
-    background-color: #4B003D;
-    color: #000000;
-    border: none;
-    padding: 8px 14px;
-    cursor: pointer;
-    border-radius: 4px;
-}
-
-.header-bar button:hover {
-    background-color: #430437;
+/* Tarot Purple Theme - Bootstrap Freelancer Style */
+:root {
+    --tarot-primary: #4B003D;
+    --tarot-secondary: #26021F;
+    --tarot-hover: #430437;
+    --tarot-bg: #9A067F;
 }
 
 body {
-    margin: 0;
-    padding: 2rem;
-    border: 2px solid #4B003D;
-    background-color: #9A067F;
-    color: #000000;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2rem;
-    font-size: 2rem;
+    border: 30px solid var(--tarot-primary) !important;
+    background-color: var(--tarot-bg) !important;
+    font-family: 'Lato', sans-serif;
 }
 
-input, button {
-    font-size: 2rem;
-    padding: 1rem;
-    border-radius: 10px;
+/* Freelancer Navbar - Fixed Top Purple */
+.navbar {
+    background-color: var(--tarot-primary) !important;
+    padding: 1rem 0;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 1.1rem;
+}
+
+.navbar-brand {
+    color: white !important;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    color: rgba(255,255,255,.8) !important;
+    padding: 0.5rem 1rem !important;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover {
+    color: white !important;
+    background-color: var(--tarot-hover);
+    border-radius: 0.25rem;
+}
+
+/* Masthead/Hero Section */
+.masthead {
+    background: linear-gradient(135deg, var(--tarot-primary) 0%, var(--tarot-bg) 100%);
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: white;
+    padding: 8rem 0 4rem;
+    position: relative;
+}
+
+.masthead h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 700;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+.masthead p {
+    font-size: 1.5rem;
+    font-weight: 300;
+    margin-bottom: 2rem;
+}
+
+/* Tarot Buttons - Freelancer Style */
+.btn-tarot {
+    background-color: var(--tarot-secondary);
+    border-color: var(--tarot-secondary);
+    color: white;
+    padding: 1rem 2rem;
+    font-size: 1.25rem;
+    border-radius: 0.5rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.btn-tarot:hover {
+    background-color: var(--tarot-hover);
+    border-color: var(--tarot-hover);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+}
+
+/* Responsive fixes */
+@media (max-width: 768px) {
+    .header-center {
+        flex-direction: column !important;
+        gap: 0.5rem;
+    }
+    
+    body {
+        padding: 1rem !important;
+        border-width: 15px !important;
+    }
 }
