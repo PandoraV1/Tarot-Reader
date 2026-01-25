@@ -2,42 +2,161 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Card Details</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ card['name'] }} - Tarot Details</title>
+    <!-- Font -->
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Lato:400,700,400italic,700italic" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Styles -->
     <link href="{{ url_for('static', filename='styles/style.css') }}" rel="stylesheet">
+    <style>
+        /* Card Detail-specific Tarot styling */
+        .card-detail-container {
+            max-width: 900px;
+            margin: 2rem auto;
+        }
+        .card-detail-hero {
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 3rem;
+            text-align: center;
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(255,255,255,0.3);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            margin-bottom: 2rem;
+        }
+        .card-detail-hero img {
+            width: 350px;
+            height: 500px;
+            object-fit: cover;
+            border-radius: 15px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+            margin: 2rem auto;
+            display: block;
+        }
+        .card-name {
+            color: #FFD700;
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+            margin-bottom: 1rem;
+        }
+        .card-id {
+            color: rgba(255,255,255,0.9);
+            font-size: 1.3rem;
+            font-weight: 500;
+            margin-bottom: 2rem;
+        }
+        .card-meaning {
+            background: rgba(75,0,61,0.4);
+            border-radius: 15px;
+            padding: 2rem;
+            color: white;
+            font-size: 1.2rem;
+            line-height: 1.8;
+            border-left: 5px solid #FFD700;
+        }
+        
+        html, body {
+            overflow-y: auto !important;
+            height: auto !important;
+            min-height: 100vh !important;
+        }
+        .main-content {
+            min-height: calc(100vh - 120px);
+            padding-top: 80px !important;
+            padding-bottom: 3rem;
+            background: inherit;
+        }
+        
+        @media (max-width: 768px) {
+            .card-detail-hero img {
+                width: 280px;
+                height: 400px;
+            }
+            .card-detail-hero {
+                padding: 2rem 1.5rem;
+                margin: 1rem;
+            }
+        }
+    </style>
 </head>
-
-<body>
-    <div class="header-bar">
-        <div class="header-center">
-            <form action="{{ url_for('cards') }}" method="get">
-                <button type="submit">Get Reading</button>
-            </form>
-
-            <form action="{{ url_for('home') }}" method="get">
-                <button type="submit">Tarot Reader</button>
-            </form>
-
-            <form action="{{ url_for('glossary') }}" method="get">
-                <button type="submit">Card Glossary</button>
-            </form>
+<body id="page-top">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('home') }}">Tarot Reader</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <form action="{{ url_for('home') }}" method="get" class="d-inline">
+                            <button type="submit" class="nav-link btn btn-link p-2">Home</button>
+                        </form>
+                    </li>
+                    <li class="nav-item">
+                        <form action="{{ url_for('cards') }}" method="get" class="d-inline">
+                            <button type="submit" class="nav-link btn btn-link p-2">Get Reading</button>
+                        </form>
+                    </li>
+                    <li class="nav-item">
+                        <form action="{{ url_for('glossary') }}" method="get" class="d-inline">
+                            <button type="submit" class="nav-link btn btn-link p-2">Card Glossary</button>
+                        </form>
+                    </li>
+                    <li class="nav-item">
+                        <form action="{{ url_for('history') }}" method="get" class="d-inline">
+                            <button type="submit" class="nav-link btn btn-link p-2">History</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
         </div>
+    </nav>
 
-        <div class="header-right">
-            <form action="{{ url_for('history') }}" method="get">
-                <button type="submit">History</button>
-            </form>
+    <!-- Main Content Section - SCROLLABLE -->
+    <main class="main-content text-white">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <!-- Page Header -->
+                    <div class="text-center mb-5 py-4">
+                        <h1 class="masthead-heading mb-4">Card Details</h1>
+                        <div class="divider-custom divider-light mx-auto mb-5" style="max-width: 300px;">
+                            <div class="divider-custom-line"></div>
+                            <div class="divider-custom-icon"><i class="fas fa-crystal-ball"></i></div>
+                            <div class="divider-custom-line"></div>
+                        </div>
+                    </div>
+
+                    <!-- Card Detail Hero Section -->
+                    <div class="card-detail-container">
+                        <div class="card-detail-hero">
+                            <h1 class="card-name">The {{ card['name'] }}</h1>
+                            <p class="card-id"><strong>ID:</strong> {{ card['id'] }}</p>
+                            <img src="{{ url_for('static', filename='images/card_' ~ card['id'] ~ '.jpg') }}"
+                                 alt="{{ card['name'] }}">
+                        </div>
+
+                        <!-- Card Meaning -->
+                        <div class="card-detail-container">
+                            <div class="card-meaning">
+                                <h3 style="color: #FFD700; margin-bottom: 1.5rem;"><i class="fas fa-scroll me-3"></i>Meaning</h3>
+                                <p>{{ card['meaning'] }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
+    </main>
 
-    <div style="margin-top: 70px;">
-        <h1>The {{ card['name'] }}</h1>
-
-        <img src="{{ url_for('static', filename='images/card_' ~ card['id'] ~ '.jpg') }}"
-             alt="{{ card['name'] }}"
-             style="max-width: 300px; height: auto; display: block; margin-bottom: 20px;">
-
-        <p><strong>Id:</strong> {{ card['id'] }}</p>
-        <p><strong>Meaning:</strong> {{ card['meaning'] }}</p>
-    </div>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
