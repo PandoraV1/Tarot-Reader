@@ -27,7 +27,7 @@ body {
     --tarot-bg: #9A067F;
 }
 
-/* Freelancer Navbar - Fixed Top Purple */
+/* Freelancer Navbar */
 .navbar {
     background-color: var(--tarot-primary) !important;
     padding: 0.5rem 0;
@@ -54,7 +54,7 @@ body {
     border-radius: 0.25rem;
 }
 
-/* Masthead - Full remaining height */
+/* Masthead */
 .masthead {
     height: calc(100vh - 120px);  /* Full height minus navbar + border */
     display: flex;
@@ -69,7 +69,6 @@ body {
     z-index: 1;
 }
 
-/* Content inside masthead gets proper spacing */
 .masthead > .container {
     height: 100%;
     display: flex;
@@ -91,7 +90,7 @@ body {
     margin-bottom: 2rem;
 }
 
-/* Tarot Buttons - Freelancer Style */
+/* Tarot Buttons */
 .btn-tarot {
     background-color: var(--tarot-secondary);
     border-color: var(--tarot-secondary);
@@ -113,7 +112,6 @@ body {
     box-shadow: 0 6px 20px rgba(0,0,0,0.3);
 }
 
-/* Responsive fixes */
 @media (max-width: 768px) {
     .header-center {
         flex-direction: column !important;
@@ -124,4 +122,22 @@ body {
         padding: 1rem !important;
         border-width: 15px !important;
     }
+}
+
+/* Floating tarot card backs on home page */
+.floating-cards {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    height: 240px;
+    margin: 0 auto;
+}
+
+.floating-card {
+    position: absolute;
+    width: 110px;
+    height: 170px;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0 15px 35px
 }
