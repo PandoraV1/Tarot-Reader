@@ -7,7 +7,7 @@ from openai import OpenAI
 app = Flask(__name__)
 
 # Initialize AI client using environment variable
-client = OpenAI(api_key="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")
+client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
 def get_db_connection():
     conn = sqlite3.connect('Testdb.db')
