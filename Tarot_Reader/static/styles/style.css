@@ -5,12 +5,14 @@
     box-sizing: border-box;
 }
 
+
 html, body {
     height: 100vh;
     margin: 0;
     padding: 0;
     overflow: hidden;
 }
+
 
 body {
     border: 0px solid var(--tarot-primary) !important;
@@ -20,12 +22,77 @@ body {
     box-sizing: border-box;
 }
 
+
 :root {
     --tarot-primary: #4B003D;
     --tarot-secondary: #26021F;
     --tarot-hover: #430437;
     --tarot-bg: #9A067F;
 }
+
+
+.starry-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 100vh;
+    z-index: 1;
+    
+    background: 
+        radial-gradient(2px 2px at 20px 30px, #eee, transparent),
+        radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8), transparent),
+        radial-gradient(1px 1px at 90px 40px, #fff, transparent),
+        radial-gradient(1px 1px at 130px 80px, rgba(255,255,255,0.6), transparent),
+        radial-gradient(2px 2px at 160px 30px, #fff, transparent),
+        linear-gradient(180deg, #0a0a23 0%, #1a0a2e 50%, #2a1a4e 100%);
+    
+    background-size: 200px 120px, 250px 160px, 180px 140px, 220px 180px, 190px 110px, cover;
+    animation: twinkle 20s ease-in-out infinite;
+}
+
+.starry-sidebar-right {
+    left: auto !important;
+    right: 0;
+}
+
+.main-content {
+    margin-left: 250px;
+    margin-right: 250px;
+}
+
+@keyframes twinkle {
+    0%, 100% { 
+        opacity: 1; 
+        background-position: 0 0, 0 0, 0 0, 0 0, 0 0, 0 0;
+    }
+    50% { 
+        opacity: 0.9; 
+        background-position: 10px 10px, 15px 15px, 5px 5px, 20px 20px, 8px 8px, 0 0;
+    }
+}
+
+/* Mobile: Hide both sidebars */
+@media (max-width: 768px) {
+    .starry-sidebar, 
+    .starry-sidebar-right {
+        display: none !important;
+    }
+    .main-content {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+    .header-center {
+        flex-direction: column !important;
+        gap: 0.5rem;
+    }
+    body {
+        padding: 1rem !important;
+        border-width: 15px !important;
+    }
+}
+
+
 
 /* Freelancer Navbar */
 .navbar {
@@ -37,22 +104,26 @@ body {
     z-index: 10;
 }
 
+
 .navbar-brand {
     color: white !important;
     font-size: 1.5rem;
     font-weight: 700;
 }
 
+
 .navbar-dark .navbar-nav .nav-link {
     color: rgba(255,255,255,.8) !important;
     padding: 0.5rem 1rem !important;
 }
+
 
 .navbar-dark .navbar-nav .nav-link:hover {
     color: white !important;
     background-color: var(--tarot-hover);
     border-radius: 0.25rem;
 }
+
 
 /* Masthead */
 .masthead {
@@ -64,10 +135,11 @@ body {
     text-align: center;
     color: white;
     padding: 2rem;
-    margin-top: 60;
+    margin-top: 60px;
     position: relative;
     z-index: 1;
 }
+
 
 .masthead > .container {
     height: 100%;
@@ -75,6 +147,7 @@ body {
     flex-direction: column;
     justify-content: center;
 }
+
 
 .masthead h1 {
     font-family: 'Montserrat', sans-serif;
@@ -84,11 +157,13 @@ body {
     text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
 }
 
+
 .masthead p {
     font-size: 1.5rem;
     font-weight: 300;
     margin-bottom: 2rem;
 }
+
 
 /* Tarot Buttons */
 .btn-tarot {
@@ -104,24 +179,13 @@ body {
     box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
 
+
 .btn-tarot:hover {
     background-color: var(--tarot-hover);
     border-color: var(--tarot-hover);
     color: white;
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-}
-
-@media (max-width: 768px) {
-    .header-center {
-        flex-direction: column !important;
-        gap: 0.5rem;
-    }
-    
-    body {
-        padding: 1rem !important;
-        border-width: 15px !important;
-    }
 }
 
 /* Floating tarot card backs on home page */
@@ -133,11 +197,12 @@ body {
     margin: 0 auto;
 }
 
+
 .floating-card {
     position: absolute;
     width: 110px;
     height: 170px;
     object-fit: cover;
     border-radius: 10px;
-    box-shadow: 0 15px 35px
+    box-shadow: 0 15px 35px rgba(0,0,0,0.6);
 }

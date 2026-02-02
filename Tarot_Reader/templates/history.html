@@ -13,105 +13,162 @@
     <!-- Your Styles -->
     <link href="{{ url_for('static', filename='styles/style.css') }}" rel="stylesheet">
     <style>
-        /* History-specific styling */
-        .history-container {
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-        .reading-list {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            margin-top: 1.5rem;
-        }
-        .reading-item {
-            background: rgba(38, 2, 31, 0.9);
-            border-radius: 15px;
-            padding: 1.5rem;
-            border: 2px solid rgba(255,255,255,0.25);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-            transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
-        }
-        .reading-item:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
-            border-color: rgba(255,255,255,0.5);
-        }
-        .reading-link {
-            color: white;
-            text-decoration: none;
-            display: block;
-        }
-        .reading-link:hover {
-            color: white;
-            text-decoration: none;
-        }
-        .reading-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-        .reading-title {
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: #FFD700;
-        }
-        .reading-date {
-            font-size: 1rem;
-            color: rgba(255,255,255,0.8);
-        }
-        .card-group {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin: 15px 0;
-        }
-        .card-group img {
-            width: 70px;
-            height: auto;
-            border-radius: 6px;
-            box-shadow: 0 0 8px rgba(0,0,0,0.7);
-            border: 2px solid rgba(255,255,255,0.4);
-            background: #000;
-        }
-        .ai-summary {
-            margin-top: 10px;
-            font-size: 1.05rem;
-            color: rgba(255,255,255,0.95);
-        }
-        .ai-summary strong {
-            color: #FFD700;
-        }
-        .clear-history-btn {
-            background-color: var(--tarot-secondary);
-            border-color: var(--tarot-secondary);
-            color: white;
-            font-weight: 700;
-            text-transform: uppercase;
-        }
-        .clear-history-btn:hover {
-            background-color: var(--tarot-hover);
-            border-color: var(--tarot-hover);
-            color: white;
-        }
+    /* History-specific styling */
+    .history-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding-top: 20px;
+    }
+    
+    .reading-list {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        margin-top: 1.5rem;
+    }
+    
+    .reading-item {
+        background: rgba(38, 2, 31, 0.9);
+        border-radius: 15px;
+        padding: 1.5rem;
+        border: 2px solid rgba(255,255,255,0.25);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+    
+    .reading-item:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+        border-color: rgba(255,255,255,0.5);
+    }
+    
+    .reading-link {
+        color: white;
+        text-decoration: none;
+        display: block;
+    }
+    
+    .reading-link:hover {
+        color: white;
+        text-decoration: none;
+    }
+    
+    .reading-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    
+    .reading-title {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: #FFD700;
+    }
+    
+    .reading-date {
+        font-size: 1rem;
+        color: rgba(255,255,255,0.8);
+    }
+    
+    .card-group {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin: 15px 0;
+    }
+    
+    .card-group img {
+        width: 70px;
+        height: auto;
+        border-radius: 6px;
+        box-shadow: 0 0 8px rgba(0,0,0,0.7);
+        border: 2px solid rgba(255,255,255,0.4);
+        background: #000;
+    }
+    
+    .ai-summary {
+        margin-top: 10px;
+        font-size: 1.05rem;
+        color: rgba(255,255,255,0.95);
+    }
+    
+    .ai-summary strong {
+        color: #FFD700;
+    }
+    
+    .clear-history-btn {
+        background-color: var(--tarot-secondary);
+        border-color: var(--tarot-secondary);
+        color: white;
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+    
+    .clear-history-btn:hover {
+        background-color: var(--tarot-hover);
+        border-color: var(--tarot-hover);
+        color: white;
+    }
 
-        html, body {
-            overflow-y: auto !important;
-            height: auto !important;
-            min-height: 100vh !important;
-        }
+    html, body {
+        overflow-y: auto !important;
+        height: auto !important;
+        min-height: 100vh !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    
+    .main-content {
+        padding-top: 90px !important;
+        padding-bottom: 2rem !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        margin: 0 !important;
+        min-height: calc(100vh - 90px) !important;
+        background: inherit !important;
+    }
+    
+    main.main-content {
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+        margin: 0 !important;
+        min-height: auto !important;
+    }
+    
+    .navbar {
+        padding: 0.75rem 1rem !important;
+        margin: 0 !important;
+    }
+    
+    @media (max-width: 768px) {
         .main-content {
-            min-height: calc(100vh - 120px);
             padding-top: 80px !important;
-            padding-bottom: 3rem;
-            background: inherit;
+            padding-left: 1rem !important;
+            padding-right: 1rem !important;
         }
-    </style>
+        
+        main.main-content {
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+        }
+    }
+    
+    .reading-list {
+        min-height: calc(100vh - 220px);
+    }
+</style>
+
 </head>
 <body id="page-top">
+    <!-- Starry sidebar - Left -->
+    <div class="starry-sidebar"></div>
+    <!-- Starry sidebar - Right -->
+    <div class="starry-sidebar starry-sidebar-right"></div>
+
+    <div class="main-content">
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
         <div class="container">
@@ -142,7 +199,7 @@
     </nav>
 
     <!-- Main content -->
-    <main class="main-content text-white">
+    <main class="text-white">
         <div class="container history-container">
             <!-- Page header -->
             <div class="text-center mb-4 py-4">
@@ -219,5 +276,6 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    </div>
 </body>
 </html>
